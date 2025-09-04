@@ -1,0 +1,107 @@
+{
+  "dataset_info": {
+    "n_samples": 38,
+    "class_distribution": {
+      "Negative": 19,
+      "Positive": 15,
+      "Suspicious cancer": 4
+    }
+  },
+  "classification_report": {
+    "Negative": {
+      "precision": 0.6666666666666666,
+      "recall": 0.42105263157894735,
+      "f1-score": 0.5161290322580645,
+      "support": 19.0
+    },
+    "Positive": {
+      "precision": 0.3333333333333333,
+      "recall": 0.06666666666666667,
+      "f1-score": 0.1111111111111111,
+      "support": 15.0
+    },
+    "Suspicious cancer": {
+      "precision": 0.17391304347826086,
+      "recall": 1.0,
+      "f1-score": 0.2962962962962963,
+      "support": 4.0
+    },
+    "accuracy": 0.34210526315789475,
+    "macro avg": {
+      "precision": 0.3913043478260869,
+      "recall": 0.495906432748538,
+      "f1-score": 0.30784547988849065,
+      "support": 38.0
+    },
+    "weighted avg": {
+      "precision": 0.48321891685736074,
+      "recall": 0.34210526315789475,
+      "f1-score": 0.333113249072502,
+      "support": 38.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      8,
+      2,
+      9
+    ],
+    [
+      4,
+      1,
+      10
+    ],
+    [
+      0,
+      0,
+      4
+    ]
+  ],
+  "auc_with_ci": {
+    "Negative": {
+      "mean": 0.703753782713881,
+      "ci_lower": 0.5210040266106443,
+      "ci_upper": 0.8654166666666666
+    },
+    "Positive": {
+      "mean": 0.464540136953857,
+      "ci_lower": 0.267827380952381,
+      "ci_upper": 0.6666923076923077
+    },
+    "Suspicious cancer": {
+      "mean": 0.7487359191408509,
+      "ci_lower": 0.4864864864864865,
+      "ci_upper": 1.0
+    }
+  },
+  "clinical_thresholds": {
+    "Negative": {
+      "threshold": 0.3405880928039551,
+      "sensitivity": 0.631578947368421,
+      "specificity": 0.8421052631578947,
+      "ppv": 0.7999999994666667,
+      "npv": 0.695652173610586,
+      "prevalence": 0.5
+    },
+    "Positive": {
+      "threshold": 0.3185473382472992,
+      "sensitivity": 0.4,
+      "specificity": 0.7391304347826086,
+      "ppv": 0.4999999995833333,
+      "npv": 0.6538461535946746,
+      "prevalence": 0.39473684210526316
+    },
+    "Suspicious cancer": {
+      "threshold": 0.37220045924186707,
+      "sensitivity": 0.75,
+      "specificity": 0.7647058823529411,
+      "ppv": 0.2727272724793388,
+      "npv": 0.96296296260631,
+      "prevalence": 0.10526315789473684
+    }
+  },
+  "error_analysis": {
+    "total_errors": 25,
+    "error_rate": 0.6578947368421053
+  }
+}
