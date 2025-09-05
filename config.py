@@ -3,8 +3,11 @@ import torch
 
 # General Configuration
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Directories
 ARTIFACTS_DIR = Path("artifacts")
-DATA_DIR = ARTIFACTS_DIR / "via-cervix"
+# Correctly set DATA_DIR to point to the subfolder containing the class directories
+DATA_DIR = ARTIFACTS_DIR / "via-cervix" 
 RESULTS_DIR = ARTIFACTS_DIR / "training_runs"
 
 # Class names and mapping
@@ -26,7 +29,7 @@ CANCER_PENALTY = 15.0
 NUM_SPLITS = 5
 BATCH_SIZE = 16
 
-# Data Ingestion
+# Data Ingestion (assuming this part is for downloading, which might be handled elsewhere)
 FILE_ID = "1lFvuTpzdfSAckyjtHZzE2HWqsH25sa1q"
 ZIP_PATH = ARTIFACTS_DIR / "via-cervix.zip"
 EXTRACT_DIR = ARTIFACTS_DIR / "via-cervix"

@@ -30,5 +30,5 @@
   "pooler_act": "tanh",
   "pooler_output_size": 768,
   "qkv_bias": true,
-  "transformers_version": "4.56.0"
+  "transformers_version": "4.56.1"
 }

@@ -17,11 +17,33 @@ import os
 from pathlib import Path
 from tqdm.auto import tqdm
 
-from config import (
-    DEVICE, DATA_DIR, RESULTS_DIR, CLASS_NAMES, CLASS_TO_IDX, SEED,
-    BASE_MODEL_PATH, NUM_LABELS, EPOCHS, LEARNING_RATE, WEIGHT_DECAY,
-    CANCER_PENALTY, NUM_SPLITS, BATCH_SIZE, TRAINED_MODEL_PATH
-)
+# --- Config ---
+
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ARTIFACTS_DIR = Path("artifacts")
+# Corrected DATA_DIR to match the 'via-cervix/Data/...' structure
+DATA_DIR = ARTIFACTS_DIR / "via-cervix" / "Data"
+RESULTS_DIR = ARTIFACTS_DIR / "training_runs"
+
+CLASS_NAMES = ["Negative", "Positive", "Suspicious cancer"]
+CLASS_TO_IDX = {c: i for i, c in enumerate(CLASS_NAMES)}
+
+MODEL_NAME = "google/vit-base-patch16-224"
+NUM_LABELS = len(CLASS_NAMES)
+BASE_MODEL_PATH = ARTIFACTS_DIR / "base_model"
+TRAINED_MODEL_PATH = RESULTS_DIR / "best_model.pth"
+
+SEED = 42
+EPOCHS = 10
+LEARNING_RATE = 2e-5
+WEIGHT_DECAY = 0.01
+CANCER_PENALTY = 15.0
+NUM_SPLITS = 5
+BATCH_SIZE = 16
+
+FILE_ID = "1lFvuTpzdfSAckyjtHZzE2HWqsH25sa1q"
+ZIP_PATH = ARTIFACTS_DIR / "via-cervix.zip"
+EXTRACT_DIR = ARTIFACTS_DIR / "via-cervix"
 
 # --- Loss Functions ---
 
@@ -115,7 +137,7 @@ class MultiStageTrainer:
                 
                 optimizer.zero_grad()
                 logits = self.model(images).logits
-                loss = F.cross_entropy(logits, binary_labels) # Simplified for binary
+                loss = F.cross_entropy(logits, binary_labels)
                 loss.backward()
                 optimizer.step()
                 total_loss += loss.item()
@@ -185,6 +207,11 @@ def main():
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     all_samples = list_images_by_class(DATA_DIR, CLASS_NAMES)
+    
+    if not all_samples:
+        print(f"Error: No images found in {DATA_DIR}. Please check the path, class names, and directory structure.")
+        return
+
     labels = np.array([s[1] for s in all_samples])
 
     skf = StratifiedKFold(n_splits=NUM_SPLITS, shuffle=True, random_state=SEED)
@@ -203,7 +230,11 @@ def main():
         train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
         val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
-        model = ViTForImageClassification.from_pretrained(BASE_MODEL_PATH)
+        model = ViTForImageClassification.from_pretrained(
+            MODEL_NAME, 
+            num_labels=NUM_LABELS,
+            ignore_mismatched_sizes=True
+        )
         trainer = MultiStageTrainer(model, DEVICE, CLASS_NAMES)
 
         trainer.stage1_binary_training(train_loader, epochs=3)
@@ -214,7 +245,6 @@ def main():
         if best_fold_recall > best_overall_recall:
             best_overall_recall = best_fold_recall
             best_model_state = best_fold_model_state
-            # Also save evaluation files from the best fold
             model.load_state_dict(best_fold_model_state)
             save_evaluation_files(model, val_loader, DEVICE)
 

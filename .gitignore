@@ -217,13 +217,19 @@ __pycache__/
 /artifacts/via-cervix.zip
 
 # Large downloaded base model file (keep its config)
-/artifacts/base_model/model.safetensors
+#/artifacts/base_model/model.safetensors
 
 # Intermediate model checkpoints from training
-/artifacts/training_runs/fold_*.pth
+#/artifacts/training_runs/fold_*.pth
 
 # Temporary image files from the app
 temp_image.jpg
+setup.py
+template.py
+clinical_thresholds.csv
+comprehensive_evaluation.json
+/artifacts/training_runs/confusion_matrix.png
+
 
 # OS-specific files
 .DS_Store
