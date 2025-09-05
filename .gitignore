@@ -207,6 +207,24 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Ignore the downloaded raw dataset and its zip file
+# Python virtual environment and cache
+/venv-ave/
+__pycache__/
+*.pyc
+
+# Raw dataset and its zip file
 /artifacts/via-cervix/
 /artifacts/via-cervix.zip
+
+# Large downloaded base model file (keep its config)
+/artifacts/base_model/model.safetensors
+
+# Intermediate model checkpoints from training
+/artifacts/training_runs/fold_*.pth
+
+# Temporary image files from the app
+temp_image.jpg
+
+# OS-specific files
+.DS_Store
+Thumbs.db
